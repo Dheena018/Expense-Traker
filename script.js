@@ -9,9 +9,8 @@ const btn = document.getElementById('submit');
 const form =document.getElementById('form')
 const notification=document.getElementById("notification")
 
-const dummyTransactions =[];
 
-let transaction=dummyTransactions;
+let transaction=[];
 
 
  function showNotification(){
@@ -38,46 +37,45 @@ form.addEventListener('submit', function(e){
             text:text.value,
             amount:amount.value,
         };
-        transaction.push(transaction);
+        transaction.push(transactions);
         addTransactionDOM(transactions);
         updateValues();
-        init();
+        // init();
     }
 });
 
 
-function addTransactionDOM(transaction){
-    const sign = transaction.amount < 0 ? "-" : "+";
+function addTransactionDOM(transactions){
+    const sign = transactions.amount < 0 ? "-" : "+";
     const item = document.createElement("li");
     item.classList.add(sign === "+" ? "plus" :  "minus");
-    item.innerHTML=`${transaction.text} <span>${sign} ${Math.abs(transaction.amount)}</span>
-    <button class="delete-btn" onclick="removeTransaction(${transaction.id})">X</button>`;
+    item.innerHTML=`${transactions.text} <span>${sign} ${Math.abs(transactions.amount)}</span>
+    <button class="delete-btn" onclick="removeTransaction(${transactions.id})">X</button>`;
     list.appendChild(item);
 };
 
 
 
 function updateValues(){
-    const amounts = transaction.map((transaction) => transaction.amount);
+    const amounts = transaction.map((transactions) => transactions.amount);
     const total = amounts
-    .reduce((accumulator, value) => (accumulator += value), 0)
-    .toFixed(2);
-    const income = amounts
+    .reduce(((accumulator, value) => accumulator += value), 0)
+    ;
+    const incomes = amounts
     .filter((value) => value > 0)
-    .reduce((accumulator, value) => (accumulator += value), 0)
-    .toFixed(2);
-    const expense = (
+    .reduce(((accumulator, value) => accumulator += value), 0);
+    const expenses = (
     amounts
         .filter((value) => value < 0)
-        .reduce((accumulator, value) => (accumulator += value), 0) * -1
-    ).toFixed(2);
-    balance.innerText = `$${total}`;
-    income.innerText = `$${income}`;
-    expense.innerText = `$${expense}`;
+        .reduce(((accumulator, value) => accumulator += value), 0) * -1
+    );
+    balance.innerHTML = `$${total}`;
+    income.innerHTML= `$${incomes}`;
+    expense.innerHTML = `$${expenses}`;
 }
 
 function removeTransaction(id){
-    transaction=transaction.filter((transaction)=>transaction.id !== id);
+    transaction=transaction.filter((transactions)=>transactions.id !== id);
 
     init();
 };
@@ -87,4 +85,4 @@ function init(){
     updateValues();
 };
 
-init();
+// init();
